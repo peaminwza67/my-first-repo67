@@ -1,18 +1,34 @@
 def calculate_price(price, discount_percent, vat_percent=7):
-    if price < 0 or not 0 <= discount_percent <= 100 or vat_percent < 0:
-        raise ValueError("กรุณาตรวจสอบราคาและเปอร์เซ็นต์ที่ระบุ")
+    if price < 0:
+        raise ValueError("ราคาต้องไม่ติดลบ")
+    if not 0 <= discount_percent <= 100:
+        raise ValueError("ส่วนลดต้องอยู่ระหว่าง 0 ถึง 100")
+    if vat_percent < 0:
+        raise ValueError("VAT ต้องไม่ติดลบ")
 
     discount = price * discount_percent / 100
-    price_after_discount = price - discount
-    vat = price_after_discount * vat_percent / 100
-    total = price_after_discount + vat
+    discounted_price = price - discount
+    vat = discounted_price * vat_percent / 100
+    total = discounted_price + vat
 
-    return discount, price_after_discount, vat, total
+    return discount, discounted_price, vat, total
 
 
-discount, discounted_price, vat, total = calculate_price(1000, 20)
+def main():
+    try:
+        price = float(input("ราคาสินค้า (บาท): "))
+        discount_percent = float(input("ส่วนลด (%): "))
+        discount, discounted_price, vat, total = calculate_price(
+            price, discount_percent
+        )
+    except ValueError as error:
+        raise SystemExit(f"ข้อมูลไม่ถูกต้อง: {error}")
 
-print(f"ส่วนลด: {discount:.2f} บาท")
-print(f"ราคาหลังหักส่วนลด: {discounted_price:.2f} บาท")
-print(f"VAT: {vat:.2f} บาท")
-print(f"ราคาสุทธิ: {total:.2f} บาท")
+    print(f"\nส่วนลด: {discount:.2f} บาท")
+    print(f"ราคาหลังหักส่วนลด: {discounted_price:.2f} บาท")
+    print(f"VAT 7%: {vat:.2f} บาท")
+    print(f"ราคาสุทธิ: {total:.2f} บาท")
+
+
+if __name__ == "__main__":
+    main()
