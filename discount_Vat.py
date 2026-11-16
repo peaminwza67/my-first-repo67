@@ -1,19 +1,18 @@
-function calculatePrice(price, discountPercent, vatPercent = 7) {
-  if (price < 0 || discountPercent < 0 || discountPercent > 100 || vatPercent < 0) {
-    throw new Error("กรุณาตรวจสอบราคาและเปอร์เซ็นต์ที่ระบุ");
-  }
+def calculate_price(price, discount_percent, vat_percent=7):
+    if price < 0 or not 0 <= discount_percent <= 100 or vat_percent < 0:
+        raise ValueError("กรุณาตรวจสอบราคาและเปอร์เซ็นต์ที่ระบุ")
 
-  const discount = price * (discountPercent / 100);
-  const priceAfterDiscount = price - discount;
-  const vat = priceAfterDiscount * (vatPercent / 100);
-  const total = priceAfterDiscount + vat;
+    discount = price * discount_percent / 100
+    price_after_discount = price - discount
+    vat = price_after_discount * vat_percent / 100
+    total = price_after_discount + vat
 
-  return { discount, priceAfterDiscount, vat, total };
-}
+    return discount, price_after_discount, vat, total
 
-const result = calculatePrice(1000, 20);
 
-console.log(`ส่วนลด: ${result.discount} บาท`);
-console.log(`ราคาหลังหักส่วนลด: ${result.priceAfterDiscount} บาท`);
-console.log(`VAT: ${result.vat} บาท`);
-console.log(`ราคาสุทธิ: ${result.total} บาท`);
+discount, discounted_price, vat, total = calculate_price(1000, 20)
+
+print(f"ส่วนลด: {discount:.2f} บาท")
+print(f"ราคาหลังหักส่วนลด: {discounted_price:.2f} บาท")
+print(f"VAT: {vat:.2f} บาท")
+print(f"ราคาสุทธิ: {total:.2f} บาท")
